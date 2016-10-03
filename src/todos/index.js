@@ -46,7 +46,7 @@ export default class Todos extends React.Component {
     taxios.put(`http://localhost:3030/todos/${id}`, {
       complete: todoItem.complete
     })
-    .then((response) => {
+    .then(() => {
       this.setState({ todos: todos, error: false });
     })
     .catch((error) => {
@@ -62,7 +62,7 @@ export default class Todos extends React.Component {
       }
     });
     taxios.delete(`http://localhost:3030/todos/${id}`)
-    .then((response) => {
+    .then(() => {
       let todos = this.state.todos;
       todos = todos.slice(0, index).concat(todos.slice(index + 1));
       this.setState({ todos: todos, error: false });

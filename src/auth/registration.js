@@ -25,10 +25,9 @@ class Registration extends React.Component {
       }
     }
     axios.post('http://localhost:3030/users', serializedForm)
-    .then((response) => {
+    .then(() => {
       cookie.save('registered', true);
       this.setState({ error: false });
-
     })
     .catch((error) => {
       this.setState({ error });
