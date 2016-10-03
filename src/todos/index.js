@@ -74,7 +74,7 @@ export default class Todos extends React.Component {
 
   createItem = (e, serializedForm) => {
     e.preventDefault();
-    console.log(serializedForm)
+
     const token = cookie.load('token');
     const taxios = axios.create({
       headers: {

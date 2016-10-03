@@ -28,11 +28,10 @@ class Registration extends React.Component {
     .then((response) => {
       cookie.save('registered', true);
       this.setState({ error: false });
-      console.log(response);
+
     })
     .catch((error) => {
       this.setState({ error });
-      console.log(error);
     });
   }
 

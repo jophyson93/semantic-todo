@@ -25,11 +25,9 @@ class Login extends React.Component {
       cookie.save('userid', response.data.userid);
       cookie.save('token', response.data.token);
       this.setState({ error: false });
-      console.log(response);
     })
     .catch((error) => {
       this.setState({ error });
-      console.log(error);
     });
   }
 
