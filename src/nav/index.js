@@ -9,6 +9,7 @@ const mapStateToProps = state => ({ title: state.get('title') });
 export class Nav extends React.Component {
   render() {
     const token = cookie.load('token');
+    console.log(token)
     const registered = cookie.load('registered');
     const { title } = this.props;
     return (
@@ -38,14 +39,14 @@ export class Nav extends React.Component {
         />
 
         <Menu.Menu position='right'>
-          {!registered && !token && (
+          {!token && (
             <Menu.Item
               name="login"
               as={Link}
               to="/login" />
           )}
 
-          {!token && (
+          {!registered && !token && (
             <Menu.Item>
               <Button primary as={Link} to="/signup">Sign Up</Button>
             </Menu.Item>
