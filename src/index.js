@@ -2,12 +2,31 @@ import App from './app';
 import routes from './routes';
 import Layout from './layout';
 
-export const reducers = {
-  title: state => state
+//ACTION TYPES
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
+
+// ACTION CREATORS
+export function signInSuccess(loggedIn, userid, token) {
+  return {
+    type: SIGN_IN_SUCCESS,
+    loggedIn,
+    userid,
+    token,
+  }
+}
+
+export const stateReducers = {
+  title: state => state,
+  loggedIn: state => state,
+  userid: state => state,
+  token: state => state,
 };
+
 
 export const initialState = {
-  title: 'semantic-todo'
+
 };
 
-App({ reducers, initialState, Layout, routes }).render();
+
+
+App({initialState, Layout, routes }).render();

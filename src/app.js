@@ -12,6 +12,8 @@ import { Router, Route, browserHistory } from 'react-router';
 import { combineReducers } from 'redux-immutable';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createDevTools, persistState } from 'redux-devtools';
+//import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SIGN_IN_FAILURE } from './data/auth'
+import userInfo from './data/auth'
 
 const IS_PROD = process.env.NODE_ENV !== 'development';
 const NOOP = () => null;
@@ -39,11 +41,18 @@ export default (options) => {
     Layout = NOOP,
     loggerOptions = {},
     middleware = [],
-    reducers = {},
     enhancers = {},
     routes = []
   } = options;
 
+/*
+ const defaultState = {
+    title: 'semantic-todo',
+    loggedIn: false,
+    userid: '',
+    token: ''
+  };
+*/
   const frozen = Immutable.fromJS(initialState);
 
   const routing = (state = frozen, action) => {
@@ -51,12 +60,29 @@ export default (options) => {
       state.merge({ locationBeforeTransitions: action.payload }) :
       state;
   };
+/*
+  // REDUCERS
+    function reducers(state = defaultState, action) {
+      switch (action.type) {
+        case SIGN_IN_SUCCESS:
+          return {
+            loggedIn: action.loggedIn,
+            userid: action.userid,
+            token: action.token
+          };
+        default:
+          return state;
+      }
+    }
+*/
+  //const userInfo = combineReducers({ reducers, routing })
+
+  const reducers = combineReducers({userInfo, routing})
 
   const initialMiddleware = [createLogger(loggerOptions)];
 
   const store = createStore(
-    combineReducers({ ...reducers, routing }),
-    frozen,
+    reducers,
     compose(
       applyMiddleware(...initialMiddleware, ...middleware),
       ...initialEnhancers,
@@ -76,7 +102,6 @@ export default (options) => {
   );
 
   return {
-    store,
     history,
     render(rootElement = document.getElementById('root')) {
       ReactDOM.render(

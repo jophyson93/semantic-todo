@@ -3,19 +3,39 @@ import cookie from 'react-cookie';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Menu, Button } from 'stardust'
+import { signInSuccess, signOutSuccess } from '../data/auth'
 
-const mapStateToProps = state => ({ title: state.get('title') });
 
-export class Nav extends React.Component {
+const mapStateToProps = (state) => {
+  return {
+       loggedIn: state._root.entries[0][1].loggedIn,
+       userid: state._root.entries[0][1].userid,
+       token: state._root.entries[0][1].token,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    signInSuccess: (loggedIn, userid, token) => {
+      dispatch(signInSuccess(loggedIn, userid, token))
+    },
+    signOutSuccess: () => {
+      dispatch(signOutSuccess())
+    }
+  }
+}
+
+class Nav extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    const token = cookie.load('token');
-    console.log(token)
-    const registered = cookie.load('registered');
-    const { title } = this.props;
+    const token = this.props.token;
+    const registered = this.props.userid;
     return (
       <Menu stackable>
         <Menu.Item
-          name={title}
+          name="semantic todo"
           as={Link}
           to="/"
         />
@@ -60,6 +80,7 @@ export class Nav extends React.Component {
                 cookie.remove('userid');
                 cookie.remove('registered');
                 this.forceUpdate();
+                this.props.signOutSuccess();
               }} />
           )}
         </Menu.Menu>
@@ -70,4 +91,4 @@ export class Nav extends React.Component {
 
 Nav.displayName = 'Nav';
 
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
